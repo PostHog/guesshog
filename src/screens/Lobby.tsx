@@ -77,7 +77,7 @@ export function Lobby({ room, send, onCopyLink }: { room: RoomView; send: Send; 
     <main className="lobby">
       <header className="lobby-head">
         <span className="eyebrow">Room code</span>
-        <CodeDisplay code={room.code} size={64} />
+        <CodeDisplay code={room.code} size={52} />
         <button className="btn btn-small" onClick={onCopyLink}>
           🔗 Copy invite link
         </button>

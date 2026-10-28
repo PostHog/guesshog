@@ -51,9 +51,9 @@ export function Home({ onEnterRoom, initialError }: { onEnterRoom: (code: string
   }
 
   return (
-    <>
-      <main className="home">
-        <div className="home-stack">
+    <main className="home">
+      <div className="home-grid">
+        <div className="home-main">
           <GuessHogLogo />
           <p className="tagline">Guess Who, but every face is a hedgehog. Ask yes-or-no questions and find their hog first.</p>
 
@@ -95,7 +95,9 @@ export function Home({ onEnterRoom, initialError }: { onEnterRoom: (code: string
               </p>
             ) : null}
           </form>
+        </div>
 
+        <div className="home-side">
           <LiveRooms
             onEnter={(liveCode) => {
               remember()
@@ -115,7 +117,7 @@ export function Home({ onEnterRoom, initialError }: { onEnterRoom: (code: string
             </li>
           </ol>
         </div>
-      </main>
-    </>
+      </div>
+    </main>
   )
 }

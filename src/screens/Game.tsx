@@ -1,4 +1,4 @@
-import { type FormEvent, useEffect, useRef, useState } from "react"
+import { type FormEvent, useEffect, useLayoutEffect, useRef, useState } from "react"
 import { type GameView, type LogEntry, MAX_QUESTION_LENGTH, type RoomView, type Seat, otherSeat } from "../../shared/protocol.ts"
 import { hogImage } from "../lib/hogs.ts"
 import { nameOf } from "../lib/names.ts"
@@ -76,16 +76,23 @@ function Tray({
 
 function Log({ room, game }: { room: RoomView; game: GameView }) {
   const list = useRef<HTMLOListElement>(null)
-  useEffect(() => {
-    list.current?.scrollTo({ top: list.current.scrollHeight, behavior: "smooth" })
-  }, [game.log.length, game.log.at(-1)])
+  // Follow new questions like a chat, unless the reader has scrolled up to look at older ones.
+  const following = useRef(true)
+  useLayoutEffect(() => {
+    const el = list.current
+    if (el && following.current) el.scrollTop = el.scrollHeight
+  })
+  const onScroll = () => {
+    const el = list.current
+    if (el) following.current = el.scrollHeight - el.scrollTop - el.clientHeight < 40
+  }
 
   const who = (entry: LogEntry) => (room.yourSeat === entry.seat ? "You" : nameOf(room, entry.seat))
 
   return (
     <section className="panel log" aria-label="Questions so far">
       <div className="log-head eyebrow">Questions · {game.log.filter((e) => e.kind === "question").length}</div>
-      <ol className="log-list" aria-live="polite">
+      <ol className="log-list" aria-live="polite" ref={list} onScroll={onScroll}>
         {game.log.length === 0 ? <li className="log-empty">No questions yet. Start broad: hats, glasses, food…</li> : null}
         {game.log.map((entry) => (
           <li key={entry.id} className="bubble" data-seat={entry.seat}>
