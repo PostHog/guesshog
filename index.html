@@ -4,16 +4,149 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>GuessHog: Guess Who, with hedgehogs</title>
-    <meta name="description" content="Two players, 24 PostHog hedgehogs, one secret each. Ask yes-or-no questions and find your opponent's hog first. Friends can watch." />
-    <meta name="theme-color" content="#2BB3DF" />
-    <meta property="og:title" content="GuessHog" />
-    <meta property="og:description" content="Guess Who, but every face is a PostHog hedgehog. Grab a room code and play a friend." />
+    <meta name="description" content="Two players, 24 PostHog hedgehogs, one secret each. Ask yes-or-no questions and find your opponent's hog first. Free, in the browser, and friends can watch." />
+    <link rel="canonical" href="https://guesshog.posthog.com/" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+
+    <!-- Icons, generated from public/favicon.svg by scripts/gen-social-assets.mjs -->
+    <link rel="icon" href="/favicon.ico" sizes="32x32" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon-96x96.png" type="image/png" sizes="96x96" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
+    <meta name="apple-mobile-web-app-title" content="GuessHog" />
+    <meta name="theme-color" content="#1490E8" />
+    <meta name="color-scheme" content="light" />
+
+    <!-- Social cards. The worker rewrites the title and description for room invite links. -->
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://guesshog.posthog.com" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:site_name" content="GuessHog" />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:title" content="GuessHog: Guess Who, with hedgehogs" />
+    <meta property="og:description" content="Two players, 24 PostHog hedgehogs, one secret each. Ask yes-or-no questions and find your opponent's hog first." />
+    <meta property="og:url" content="https://guesshog.posthog.com/" />
+    <meta property="og:image" content="https://guesshog.posthog.com/og.png" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="GuessHog by PostHog: a red Guess Who board of hedgehog cards with some flipped down, a 'Is it wearing a hat?' question with Yes and No buttons, and the room code HOGS." />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:site" content="@PostHog" />
+    <meta name="twitter:title" content="GuessHog: Guess Who, with hedgehogs" />
+    <meta name="twitter:description" content="Two players, 24 PostHog hedgehogs, one secret each. Ask yes-or-no questions and find your opponent's hog first." />
+    <meta name="twitter:image" content="https://guesshog.posthog.com/og.png" />
+    <meta name="twitter:image:alt" content="GuessHog by PostHog: a Guess Who board of hedgehog cards, a yes-or-no question, and a room code." />
+
+    <!-- Structured data. The Organization block matches POSTHOG_ORGANIZATION on posthog.com
+         (src/components/seo.tsx) and shares its @id, so crawlers fold both into one entity. -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://posthog.com/#organization",
+            "name": "PostHog",
+            "url": "https://posthog.com",
+            "logo": "https://posthog.com/brand/posthog-logo-stacked.png",
+            "sameAs": ["https://twitter.com/PostHog", "https://github.com/PostHog", "https://www.linkedin.com/company/posthog"],
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": "2261 Market Street #4008",
+              "addressLocality": "San Francisco",
+              "addressRegion": "CA",
+              "postalCode": "94114",
+              "addressCountry": "US"
+            }
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://guesshog.posthog.com/#website",
+            "name": "GuessHog",
+            "url": "https://guesshog.posthog.com/",
+            "inLanguage": "en",
+            "publisher": { "@id": "https://posthog.com/#organization" }
+          },
+          {
+            "@type": ["VideoGame", "WebApplication"],
+            "@id": "https://guesshog.posthog.com/#game",
+            "name": "GuessHog",
+            "alternateName": "Guess Who with PostHog hedgehogs",
+            "description": "A two-player guessing game in the style of Guess Who. Each player gets a secret hedgehog from a board of 24 PostHog hoggies. Players take turns asking yes-or-no questions, flip down the hogs it can't be, and win by guessing the other player's hog. Anyone else in the room watches as a spectator.",
+            "url": "https://guesshog.posthog.com/",
+            "image": "https://guesshog.posthog.com/og.png",
+            "screenshot": "https://guesshog.posthog.com/og.png",
+            "genre": ["Board game", "Guessing game", "Party game"],
+            "gamePlatform": "Web browser",
+            "applicationCategory": "GameApplication",
+            "operatingSystem": "Any",
+            "browserRequirements": "Requires JavaScript and WebSockets",
+            "playMode": "MultiPlayer",
+            "numberOfPlayers": { "@type": "QuantitativeValue", "minValue": 2, "maxValue": 2 },
+            "isAccessibleForFree": true,
+            "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+            "inLanguage": "en",
+            "isPartOf": { "@id": "https://guesshog.posthog.com/#website" },
+            "author": { "@id": "https://posthog.com/#organization" },
+            "publisher": { "@id": "https://posthog.com/#organization" }
+          },
+          {
+            "@type": "HowTo",
+            "@id": "https://guesshog.posthog.com/#how-to-play",
+            "name": "How to play GuessHog",
+            "description": "Play Guess Who with PostHog hedgehogs against a friend in your browser.",
+            "image": "https://guesshog.posthog.com/og.png",
+            "totalTime": "PT5M",
+            "step": [
+              {
+                "@type": "HowToStep",
+                "position": 1,
+                "name": "Grab seats",
+                "text": "Create a room and send the four-letter code to a friend. Two players sit down. Everyone else watches from the stands and sees both boards."
+              },
+              {
+                "@type": "HowToStep",
+                "position": 2,
+                "name": "Ask away",
+                "text": "Take turns asking yes-or-no questions about the other player's secret hog, and flip down the hogs it can't be."
+              },
+              {
+                "@type": "HowToStep",
+                "position": 3,
+                "name": "Call it",
+                "text": "When you think you know, guess their hog. A right guess wins the round and a wrong guess loses it."
+              }
+            ]
+          },
+          {
+            "@type": "SoftwareSourceCode",
+            "@id": "https://guesshog.posthog.com/#source",
+            "name": "GuessHog",
+            "description": "Source code for GuessHog: a React app and a Cloudflare Worker with one Durable Object per game room.",
+            "codeRepository": "https://github.com/PostHog/guesshog",
+            "programmingLanguage": "TypeScript",
+            "runtimePlatform": "Cloudflare Workers",
+            "targetProduct": { "@id": "https://guesshog.posthog.com/#game" },
+            "author": { "@id": "https://posthog.com/#organization" }
+          }
+        ]
+      }
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <!-- What crawlers and link unfurlers that don't run JavaScript read. React replaces it on load. -->
+    <div id="root"><main class="prerender">
+      <h1>GuessHog: Guess Who, with hedgehogs</h1>
+      <p>Two players, 24 PostHog hedgehogs, one secret each. Ask yes-or-no questions and find your opponent's hog first. Free, in the browser, and friends can watch.</p>
+      <h2>How to play</h2>
+      <ol>
+        <li><strong>Grab seats.</strong> Create a room and send the four-letter code to a friend. Two players sit down. Everyone else watches from the stands and sees both boards.</li>
+        <li><strong>Ask away.</strong> Take turns asking yes-or-no questions about the other player's secret hog, and flip down the hogs it can't be.</li>
+        <li><strong>Call it.</strong> When you think you know, guess their hog. A wrong guess loses the round.</li>
+      </ol>
+      <p>Made by <a href="https://posthog.com">PostHog</a> with the hoggies from <a href="https://brand.posthog.com">PostHog Brand</a>. <a href="https://github.com/PostHog/guesshog">Source on GitHub</a>.</p>
+    </main></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

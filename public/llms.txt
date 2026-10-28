@@ -1,0 +1,19 @@
+# GuessHog
+
+> Guess Who, but every face is a PostHog hedgehog. A free, two-player guessing game that runs in the browser at https://guesshog.posthog.com. Made by PostHog.
+
+## How to play
+
+1. Create a room at https://guesshog.posthog.com and send the four-letter room code (or the invite link, https://guesshog.posthog.com/r/CODE) to a friend.
+2. Two people take the Player 1 and Player 2 seats. Anyone else in the room is a spectator and sees both boards and both secret hogs.
+3. Each player gets a secret hog from a shared board of 24 hedgehogs, picked at random from the solo hoggies in the @posthog/brand package.
+4. Players take turns. On your turn, type a yes-or-no question. The other player answers with Yes or No, and then it's their turn.
+5. Flip down the hogs your opponent's hog can't be. Each player can see which positions the other has flipped down, but not their secret.
+6. On your turn you can guess instead of asking. A right guess wins the round. A wrong guess loses it.
+
+## Links
+
+- Play: https://guesshog.posthog.com
+- Source code: https://github.com/PostHog/guesshog
+- The hedgehogs: https://brand.posthog.com/hoggies
+- PostHog: https://posthog.com

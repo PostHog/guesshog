@@ -1400,6 +1400,8 @@ button.tile-card:hover:not(:disabled) {
   }
 }
 
+/* The static summary in index.html, for crawlers. Only on screen for a moment before React loads. */
+.prerender,
 .visually-hidden {
   position: absolute;
   width: 1px;
