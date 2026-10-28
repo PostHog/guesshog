@@ -1285,6 +1285,23 @@ button.tile-card:hover:not(:disabled) {
   background: var(--lemon-light);
 }
 
+.sound-toggle {
+  width: 50px;
+  height: 50px;
+  display: grid;
+  place-items: center;
+  flex: none;
+  background: var(--paper);
+  border: var(--line);
+  border-radius: 14px;
+  box-shadow: var(--lift);
+  font-size: 22px;
+}
+
+.sound-toggle[aria-pressed="false"] {
+  background: #e9e1de;
+}
+
 .floaters {
   position: fixed;
   inset: 0;

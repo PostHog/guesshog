@@ -6,6 +6,8 @@ import { Floaters, ReactionBar } from "../components/Reactions.tsx"
 import { Toast } from "../components/Toast.tsx"
 import { celebrate } from "../lib/celebrate.ts"
 import { playerId, savedName } from "../lib/identity.ts"
+import { isMuted, setMuted, sounds } from "../lib/sound.ts"
+import { useGameSounds } from "../lib/useGameSounds.ts"
 import { useRoom } from "../lib/useRoom.ts"
 import { Game } from "./Game.tsx"
 import { Lobby } from "./Lobby.tsx"
@@ -16,6 +18,14 @@ export function Room({ code, onLeave }: { code: string; onLeave: (error?: string
   const [notice, setNotice] = useState<{ key: number; message: string } | null>(null)
   const [showResults, setShowResults] = useState(true)
   const lastPhase = useRef(room?.phase)
+  const [muted, setMutedState] = useState(isMuted)
+  useGameSounds(room)
+
+  const toggleSound = () => {
+    setMuted(!muted)
+    setMutedState(!muted)
+    if (muted) sounds.yourTurn() // play a sample when sound comes back on
+  }
 
   useEffect(() => setNotice(error), [error])
 
@@ -68,6 +78,10 @@ export function Room({ code, onLeave }: { code: string; onLeave: (error?: string
               </span>
             </button>
           ) : null}
+          <button className="sound-toggle" onClick={toggleSound} aria-pressed={!muted} title={muted ? "Turn sounds on" : "Turn sounds off"}>
+            <span aria-hidden="true">{muted ? "🔇" : "🔊"}</span>
+            <span className="visually-hidden">Sounds</span>
+          </button>
           <ReactionBar onReact={(emoji) => send({ t: "react", emoji })} />
         </div>
       </header>
