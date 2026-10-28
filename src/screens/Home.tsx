@@ -66,7 +66,7 @@ export function Home({ onEnterRoom, initialError }: { onEnterRoom: (code: string
                   value={name}
                   maxLength={MAX_NAME_LENGTH}
                   onChange={(e) => setName(e.target.value)}
-                  placeholder="Prickly Pancake"
+                  placeholder="Prickly Hoglet"
                 />
                 <button type="button" className="btn btn-small" style={{ minHeight: 52 }} onClick={() => setName(randomName())} aria-label="Pick a random name" title="Pick a random name">
                   🎲

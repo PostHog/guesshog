@@ -10,7 +10,7 @@ Create a room, send the four-letter code to a friend, and take a seat. Each play
 Browser ──WebSocket──▶ Worker (/api/*) ──▶ GameRoom Durable Object (one per room code)
    ▲                                          • owns the room state, persisted to SQLite storage
    └── React SPA, served as static assets     • sends each person their own view of the game
-       by the same Worker                     • hibernates when idle, deleted after 12h empty
+       by the same Worker                     • hibernates when idle, deleted after 1h empty
 ```
 
 - **`worker/`**: the Worker and the `GameRoom` Durable Object. `game.ts` holds the rules as pure functions (and is where the tests live). `viewFor` decides what each person sees: players only see their own secret and flips, spectators see everything.

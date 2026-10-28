@@ -5,7 +5,7 @@ import { applyAction, cleanName, join, newRoom, pruneMembers, type RoomState, vi
 
 const STORAGE_KEY = "room"
 /** Rooms nobody is connected to are deleted after this long. */
-const IDLE_TTL_MS = 12 * 60 * 60 * 1000
+const IDLE_TTL_MS = 60 * 60 * 1000
 /** Stop one noisy socket from spamming reactions at everyone else. */
 const REACTION_COOLDOWN_MS = 400
 

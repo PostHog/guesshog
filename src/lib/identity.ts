@@ -3,8 +3,8 @@ import { MAX_NAME_LENGTH } from "../../shared/protocol.ts"
 const PID_KEY = "guesshog:pid"
 const NAME_KEY = "guesshog:name"
 
-const ADJECTIVES = ["Prickly", "Sleepy", "Sneaky", "Bouncy", "Curious", "Grumpy", "Fuzzy", "Zippy", "Snuggly", "Spiky", "Wobbly", "Cheeky"]
-const NOUNS = ["Pancake", "Pinecone", "Waffle", "Acorn", "Dumpling", "Muffin", "Truffle", "Noodle", "Biscuit", "Pickle", "Nugget", "Bramble"]
+const ADJECTIVES = ["Prickly", "Spiky", "Bristly", "Snuffly", "Curled-up", "Hibernating", "Quilly", "Snoozy", "Nocturnal", "Sniffly", "Huffy", "Hedgerow"]
+const NOUNS = ["Hoglet", "Quill", "Urchin", "Hedgepig", "Spikeball", "Snuffler", "Pincushion", "Prickleback", "Furze-pig", "Hogling", "Quillster", "Thornball"]
 
 const pick = <T,>(items: T[]) => items[Math.floor(Math.random() * items.length)]
 
