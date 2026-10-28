@@ -1,6 +1,7 @@
 import { type FormEvent, useState } from "react"
 import { MAX_NAME_LENGTH, normalizeRoomCode } from "../../shared/protocol.ts"
 import { CodeInput } from "../components/CodeTiles.tsx"
+import { LiveRooms } from "../components/LiveRooms.tsx"
 import { GuessHogLogo } from "../components/Logo.tsx"
 import { randomName, saveName, savedName } from "../lib/identity.ts"
 
@@ -94,6 +95,13 @@ export function Home({ onEnterRoom, initialError }: { onEnterRoom: (code: string
               </p>
             ) : null}
           </form>
+
+          <LiveRooms
+            onEnter={(liveCode) => {
+              remember()
+              onEnterRoom(liveCode)
+            }}
+          />
 
           <ol className="how">
             <li>

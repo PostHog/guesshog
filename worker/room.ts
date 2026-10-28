@@ -1,6 +1,6 @@
 import { DurableObject } from "cloudflare:workers"
 import deck from "../shared/hoggies.json"
-import type { ClientMessage, Hog, ServerMessage } from "../shared/protocol.ts"
+import type { ClientMessage, Hog, LiveRoom, ServerMessage } from "../shared/protocol.ts"
 import { applyAction, cleanName, join, newRoom, pruneMembers, type RoomState, viewFor } from "./game.ts"
 
 const STORAGE_KEY = "room"
@@ -13,6 +13,8 @@ interface Attachment {
   pid: string
   lastReactionAt?: number
 }
+
+export const directory = (env: Env) => env.DIRECTORY.get(env.DIRECTORY.idFromName("global"))
 
 const random = (max: number) => {
   const buf = new Uint32Array(1)
@@ -27,6 +29,8 @@ const random = (max: number) => {
  */
 export class GameRoom extends DurableObject<Env> {
   private room: RoomState | null = null
+  /** The last summary sent to the directory, so unchanged ones (like card flips) aren't resent. */
+  private listed = ""
 
   constructor(ctx: DurableObjectState, env: Env) {
     super(ctx, env)
@@ -111,8 +115,10 @@ export class GameRoom extends DurableObject<Env> {
       await this.ctx.storage.setAlarm(Date.now() + IDLE_TTL_MS)
       return
     }
+    const code = this.room?.code
     this.room = null
     await this.ctx.storage.deleteAll()
+    if (code) await directory(this.env).remove(code)
   }
 
   private async disconnect(ws: WebSocket) {
@@ -141,6 +147,33 @@ export class GameRoom extends DurableObject<Env> {
     for (const ws of this.sockets()) {
       const { pid } = ws.deserializeAttachment() as Attachment
       this.send(ws, { t: "state", room: viewFor(this.room, pid, online) })
+    }
+    this.ctx.waitUntil(this.report(online))
+  }
+
+  /** Tell the directory what this room looks like now, or that it's empty. Never breaks the game. */
+  private async report(online: Set<string>) {
+    const room = this.room
+    if (!room) return
+    const nameOf = (id: string | null) => (id ? (room.members[id]?.name ?? null) : null)
+    const entry: Omit<LiveRoom, "updatedAt"> | null =
+      online.size === 0
+        ? null
+        : {
+            code: room.code,
+            phase: room.phase,
+            players: [nameOf(room.seats[0]), nameOf(room.seats[1])],
+            spectators: [...online].filter((id) => !room.seats.includes(id)).length,
+          }
+    const key = entry ? JSON.stringify(entry) : ""
+    if (key === this.listed) return
+    this.listed = key
+    try {
+      if (entry) await directory(this.env).update({ ...entry, updatedAt: Date.now() })
+      else await directory(this.env).remove(room.code)
+    } catch (error) {
+      this.listed = "" // try again on the next change
+      console.error("Couldn't update the room directory", error)
     }
   }
 

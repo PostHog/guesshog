@@ -1,5 +1,8 @@
 import { normalizeRoomCode, ROOM_CODE_ALPHABET, ROOM_CODE_LENGTH } from "../shared/protocol.ts"
 
+import { directory } from "./room.ts"
+
+export { RoomDirectory } from "./directory.ts"
 export { GameRoom } from "./room.ts"
 
 const json = (body: unknown, status = 200) =>
@@ -49,6 +52,10 @@ export default {
         if (await room(env, code).create(code)) return json({ code }, 201)
       }
       return json({ error: "Couldn't find a free room code. Try again." }, 503)
+    }
+
+    if (url.pathname === "/api/rooms" && request.method === "GET") {
+      return json({ rooms: await directory(env).list() })
     }
 
     const match = url.pathname.match(/^\/api\/rooms\/([^/]+)(\/ws)?$/)

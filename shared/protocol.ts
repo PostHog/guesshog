@@ -61,6 +61,17 @@ export interface RoomView {
   game: GameView | null
 }
 
+/** A room as listed on the home page. Only rooms with someone connected are listed. */
+export interface LiveRoom {
+  code: string
+  phase: Phase
+  /** Names in the Player 1 and Player 2 seats. */
+  players: [string | null, string | null]
+  /** People connected who aren't in a seat. */
+  spectators: number
+  updatedAt: number
+}
+
 export type ClientMessage =
   | { t: "rename"; name: string }
   | { t: "sit"; seat: Seat }
