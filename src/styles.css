@@ -220,6 +220,7 @@ button {
   min-height: 52px;
   padding: 0 22px;
   background: var(--face);
+  color: var(--ink);
   border: var(--line);
   border-radius: 16px;
   box-shadow: var(--lift);
