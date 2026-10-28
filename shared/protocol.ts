@@ -33,9 +33,9 @@ export interface MemberView {
 export interface PlayerView {
   /** Index into the board of this player's secret hog. Null when hidden from the viewer. */
   secret: number | null
-  /** Which cards this player has flipped down. Null when hidden from the viewer. */
-  flipped: boolean[] | null
-  /** How many cards are still standing on this player's board. Always visible. */
+  /** Which cards this player has flipped down. Everyone can see these, like the backs of a real board. */
+  flipped: boolean[]
+  /** How many cards are still standing on this player's board. */
   standing: number
 }
 

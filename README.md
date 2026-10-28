@@ -13,9 +13,9 @@ Browser ──WebSocket──▶ Worker (/api/*) ──▶ GameRoom Durable Obje
        by the same Worker                     • hibernates when idle, deleted after 1h empty
 ```
 
-- **`worker/`**: the Worker and the `GameRoom` Durable Object. `game.ts` holds the rules as pure functions (and is where the tests live). `viewFor` decides what each person sees: players only see their own secret and flips, spectators see everything.
+- **`worker/`**: the Worker and the `GameRoom` Durable Object. `game.ts` holds the rules as pure functions (and is where the tests live). `viewFor` decides what each person sees: players only see their own secret (and the backs of their opponent's board), spectators see everything.
 - **`shared/protocol.ts`**: the typed messages that go over the WebSocket, shared by client and server.
-- **`src/`**: the React app. `components/World.tsx` is the blurred three.js diorama in the background, lazy-loaded so it never holds up the game.
+- **`src/`**: the React app.
 - **`scripts/sync-hoggies.mjs`**: builds the deck from [`@posthog/brand`](https://github.com/PostHog/brand). Every hoggie tagged `solo` (and not `group`) becomes a card; the script writes `shared/hoggies.json` and resized WebPs to `public/hoggies/`. Both are generated, so they're gitignored.
 
 Hoggies, colours and the RoundHog typeface all come from `@posthog/brand`. It's pinned to an exact version because exports can change in minor releases before 1.0.

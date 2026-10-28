@@ -65,7 +65,7 @@ test("a correct guess wins, a wrong one loses", () => {
   assert.equal(wrong.room.game!.endReason, "wrong-guess")
 })
 
-test("players only see their own secret; spectators see both", () => {
+test("players only see their own secret but can see the backs of both boards", () => {
   const { room, ctx, act } = started()
   act("alice", { t: "flip", index: 5, down: true })
   const alice = viewFor(room, "alice", ctx.online).game!
@@ -74,13 +74,12 @@ test("players only see their own secret; spectators see both", () => {
 
   assert.notEqual(alice.players[0].secret, null)
   assert.equal(alice.players[1].secret, null)
-  assert.equal(alice.players[1].flipped, null)
   assert.equal(bob.players[0].secret, null)
-  assert.equal(bob.players[0].flipped, null)
+  assert.equal(bob.players[0].flipped[5], true)
   assert.equal(bob.players[0].standing, 23)
   assert.notEqual(carol.players[0].secret, null)
   assert.notEqual(carol.players[1].secret, null)
-  assert.equal(carol.players[0].flipped![5], true)
+  assert.equal(carol.players[0].flipped[5], true)
 })
 
 test("seats are locked mid-game and spectators can't play", () => {

@@ -265,7 +265,7 @@ export function applyAction(room: RoomState, actor: string, msg: ClientMessage, 
   }
 }
 
-/** What one person in the room is allowed to see. Spectators see everything; players see their own side. */
+/** What one person in the room is allowed to see. Spectators see both secrets; players only their own. Flips are public. */
 export function viewFor(room: RoomState, viewer: string, online: Set<string>): RoomView {
   const yourSeat = seatOf(room, viewer)
   const members: MemberView[] = Object.values(room.members)
@@ -277,11 +277,10 @@ export function viewFor(room: RoomState, viewer: string, online: Set<string>): R
     const g = room.game
     const seesAll = yourSeat === null || room.phase === "finished"
     const player = (s: Seat): PlayerView => {
-      const visible = seesAll || yourSeat === s
       const p = g.players[s]
       return {
-        secret: visible ? p.secret : null,
-        flipped: visible ? [...p.flipped] : null,
+        secret: seesAll || yourSeat === s ? p.secret : null,
+        flipped: [...p.flipped],
         standing: p.flipped.filter((down) => !down).length,
       }
     }

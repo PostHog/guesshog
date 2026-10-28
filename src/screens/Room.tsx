@@ -58,9 +58,7 @@ export function Room({ code, onLeave }: { code: string; onLeave: (error?: string
   return (
     <>
       <header className="topbar">
-        <a href="/" onClick={(e) => (e.preventDefault(), onLeave())} aria-label="GuessHog home" style={{ textDecoration: "none" }}>
-          <GuessHogLogo as="div" />
-        </a>
+        <GuessHogLogo onHome={() => onLeave()} />
         <div className="topbar-right">
           {room && room.phase !== "lobby" ? (
             <button className="room-badge" onClick={copyLink} title="Copy invite link">

@@ -1,4 +1,3 @@
-import { Logo } from "@posthog/brand/logo"
 import { type FormEvent, useState } from "react"
 import { MAX_NAME_LENGTH, normalizeRoomCode } from "../../shared/protocol.ts"
 import { CodeInput } from "../components/CodeTiles.tsx"
@@ -109,12 +108,6 @@ export function Home({ onEnterRoom, initialError }: { onEnterRoom: (code: string
           </ol>
         </div>
       </main>
-      <footer className="footer">
-        <span>A game by</span>
-        <a href="https://posthog.com" target="_blank" rel="noreferrer" aria-label="PostHog">
-          <Logo variant="mono" color="#fff" style={{ height: 22, width: "auto" }} />
-        </a>
-      </footer>
     </>
   )
 }

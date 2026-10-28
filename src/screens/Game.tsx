@@ -37,7 +37,7 @@ function Tray({
       </div>
       <div className="grid">
         {game.board.map((hog, i) => {
-          const down = player.flipped?.[i] ?? false
+          const down = player.flipped[i]
           const label = guessing ? `Guess ${hog.name}` : down ? `Stand ${hog.name} back up` : `Flip down ${hog.name}`
           const content = (
             <>
@@ -132,22 +132,38 @@ function TurnBanner({ room, game }: { room: RoomView; game: GameView }) {
   )
 }
 
+/** The opponent's board seen from across the table: card backs only, but you can see which ones are down. */
+function OpponentBoard({ room, game, seat }: { room: RoomView; game: GameView; seat: Seat }) {
+  const player = game.players[seat]
+  const name = nameOf(room, seat)
+  return (
+    <section className="panel opponent" aria-label={`${name}'s board from the back, ${player.standing} cards standing`}>
+      <span className="eyebrow side-label">{name}'s board</span>
+      <div className="mini-tray" data-seat={seat}>
+        {player.flipped.map((down, i) => (
+          <span key={i} className="mini-tile" data-down={down}>
+            <span className="mini-card">?</span>
+          </span>
+        ))}
+      </div>
+      <span className="side-caption">{player.standing} left</span>
+    </section>
+  )
+}
+
 function SecretCard({ game, seat }: { game: GameView; seat: Seat }) {
   const secret = game.players[seat].secret
   if (secret === null) return null
   const hog = game.board[secret]
   return (
     <section className="panel secret" data-seat={seat}>
+      <span className="eyebrow side-label">Your hog</span>
       <div className="secret-card">
         <img src={hogImage(hog)} alt="" />
       </div>
-      <div>
-        <div className="eyebrow">Your secret hog</div>
-        <div className="secret-name">{hog.name}</div>
-        <div className="muted" style={{ fontWeight: 700, fontSize: 14, marginTop: 4 }}>
-          Answer questions about this one.
-        </div>
-      </div>
+      <span className="side-caption" title={hog.name}>
+        {hog.name}
+      </span>
     </section>
   )
 }
@@ -291,21 +307,20 @@ export function Game({ room, send }: { room: RoomView; send: Send }) {
   const onTile = (index: number) => {
     if (room.phase !== "playing") return
     if (guessing) return setPendingGuess(index)
-    send({ t: "flip", index, down: !game.players[seat].flipped?.[index] })
+    send({ t: "flip", index, down: !game.players[seat].flipped[index] })
   }
 
   return (
     <main className="game">
       <div className="board-wrap">
         <Tray room={room} game={game} seat={seat} interactive={room.phase === "playing"} guessing={guessing} compact={false} onTile={onTile} />
-        <p className="tray-hint">
-          {guessing
-            ? "Tap the hog you think they picked."
-            : `Tap a hog to flip it down. ${nameOf(room, otherSeat(seat))} has ${game.players[otherSeat(seat)].standing} left.`}
-        </p>
+        <p className="tray-hint">{guessing ? "Tap the hog you think they picked." : "Tap a hog to flip it down. Tap again to stand it back up."}</p>
       </div>
       <aside className="side">
-        <SecretCard game={game} seat={seat} />
+        <div className="side-top">
+          <SecretCard game={game} seat={seat} />
+          <OpponentBoard room={room} game={game} seat={otherSeat(seat)} />
+        </div>
         <TurnBanner room={room} game={game} />
         <Log room={room} game={game} />
         <Composer room={room} game={game} send={send} guessing={guessing} setGuessing={setGuessing} />
