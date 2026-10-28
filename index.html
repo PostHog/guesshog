@@ -135,8 +135,9 @@
     </script>
   </head>
   <body>
-    <!-- What crawlers and link unfurlers that don't run JavaScript read. React replaces it on load. -->
-    <div id="root"><main class="prerender">
+    <div id="root"></div>
+    <!-- What crawlers and link unfurlers that don't run JavaScript read. Browsers with JS never paint it. -->
+    <noscript><main>
       <h1>GuessHog: Guess Who, with hedgehogs</h1>
       <p>Two players, 24 PostHog hedgehogs, one secret each. Ask yes-or-no questions and find your opponent's hog first. Free, in the browser, and friends can watch.</p>
       <h2>How to play</h2>
@@ -146,7 +147,7 @@
         <li><strong>Call it.</strong> When you think you know, guess their hog. A wrong guess loses the round.</li>
       </ol>
       <p>Made by <a href="https://posthog.com">PostHog</a> with the hoggies from <a href="https://brand.posthog.com">PostHog Brand</a>. <a href="https://github.com/PostHog/guesshog">Source on GitHub</a>.</p>
-    </main></div>
+    </main></noscript>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>
