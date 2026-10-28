@@ -1,0 +1,9 @@
+node_modules
+dist
+.wrangler
+.dev.vars*
+.DS_Store
+*.tsbuildinfo
+# Generated from @posthog/brand by scripts/sync-hoggies.mjs
+public/hoggies
+shared/hoggies.json
